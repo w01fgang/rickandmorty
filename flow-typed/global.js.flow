@@ -1,0 +1,50 @@
+// @flow strict
+
+declare type Character = {|
+  +id: number,
+  +name: string,
+  +status: 'Alive' | 'Dead' | 'Unknown',
+  +species: 'Human' | "Humanoid",
+  +type: string,
+  +gender: 'Male' | 'Female' | 'Genderless' | 'Unknown',
+  +origin: {|
+    +name: string,
+    +url: string,
+  |},
+  +location: {|
+    +name: string,
+    +url: string,
+  |},
+  +image: string,
+  +episode: Array<string>,
+  +url: string,
+  +created: string,
+|};
+
+declare type Episode = {|
+  +id: number,
+  +name: string,
+  +air_date: string,
+  +episode: string,
+  +characters: Array<string>,
+  +url: string,
+  +created: string,
+|};
+
+declare type ApiResponse<T> = {|
+  +info: {|
+    +count: number,
+    +next: string | null,
+    +pages: number,
+    +prev: string | null,
+  |},
+  +results: Array<T>,
+|};
+
+
+declare type GlobalState = {|
+  +count: number,
+  +query: string,
+  +searching: boolean,
+  +searchResults: Array<Character>,
+|};
