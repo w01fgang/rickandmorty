@@ -1,0 +1,4 @@
+flow-typed
+.next
+.env.local
+node_modules
