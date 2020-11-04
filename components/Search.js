@@ -41,9 +41,11 @@ export default function Search({ fullScreen }: Props) {
           }
 
           .search-container {
+            display: flex;
             flex: 1 1 auto;
             max-width: 584px;
             margin: 0 40px;
+            align-items: center;
           }
 
           @media (max-width: 440px) {
