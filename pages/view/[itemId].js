@@ -9,6 +9,7 @@ import { fetchCharacter } from '../../lib/api';
 
 import CharacterDetails from '../../components/CharacterDetails';
 
+/* this component is done without redux for purpose, to show an exmple without redux */
 const ViewItem = () => {
   const router = useRouter();
   const [item, setItem] = useState(Initial());
@@ -38,8 +39,12 @@ const ViewItem = () => {
     <div className="container">
       {item.dispatch(
         () => <div />,
-        () => <div>Loading...</div>,
-        (err) => <div>{err.message}</div>,
+        () => <div className="center">Loading...</div>,
+        (err) => (
+          <div className="center error">
+            <p>{err.message}</p>
+          </div>
+        ),
         (char) => <CharacterDetails character={char} />,
       )}
       <style jsx>
@@ -47,6 +52,18 @@ const ViewItem = () => {
           .container {
             display: flex;
           }
+          .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+          }
+
+          .error {
+            color: #d32f2f;
+          }
+
         `}
       </style>
     </div>

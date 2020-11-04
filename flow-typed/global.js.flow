@@ -49,4 +49,5 @@ declare type GlobalState = {|
   +query: string,
   +searching: boolean,
   +searchResults: Array<Character>,
+  +episodes: Array<Episode>,
 |};

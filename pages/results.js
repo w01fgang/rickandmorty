@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
@@ -17,13 +17,18 @@ const ResultsPage = () => {
   const page = useSelector((state: GlobalState) => state.page);
   const totalPages = useSelector((state: GlobalState) => Math.ceil(state.count / 5));
   const query = useSelector((state: GlobalState) => state.query);
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
+    if (pageLoaded) {
+      return;
+    }
     const queryFromUrl = Object.values(router.query).join(' ');
     if (queryFromUrl !== query) {
       dispatch(makeSearch(queryFromUrl));
+      setPageLoaded(true);
     }
-  }, [dispatch, query, router]);
+  }, [dispatch, query, router, pageLoaded]);
 
   useEffect(() => {
     if (searchResults.length > 0 && searchResults.slice(page * 5, page * 5 + 5).length === 0) {
