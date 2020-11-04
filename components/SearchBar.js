@@ -30,21 +30,19 @@ export default function SearchBar() {
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="icon-container">
-          <SearchIcon width={20} height={20} />
-        </div>
+    <div className="container">
+      <div className="icon-container">
+        <SearchIcon width={20} height={20} />
+      </div>
 
-        <div className="input-container">
-          <input type="text" placeholder="Search for anything" onChange={handleChange} onKeyDown={handleEnterKey} value={query} />
-        </div>
+      <div className="input-container">
+        <input type="text" placeholder="Search for anything" onChange={handleChange} onKeyDown={handleEnterKey} value={query} />
+      </div>
 
-        <div className="button-container">
-          <Button onClick={handleSearch} round>
-            <SearchIcon width={24} height={24} color="#eceff1" />
-          </Button>
-        </div>
+      <div className="button-container">
+        <Button onClick={handleSearch} round>
+          <SearchIcon width={24} height={24} color="#eceff1" />
+        </Button>
       </div>
       <style jsx>
         {`
@@ -91,8 +89,8 @@ export default function SearchBar() {
             align-items: center;
             padding-right: 6px;
           }
-          `}
+        `}
       </style>
-    </>
+    </div>
   );
 }
