@@ -1,4 +1,4 @@
-# Rental managing system
+# Rick and Morty, BigCorp affiliate program
 
 ## Stack
 - [React](https://reactjs.org)
@@ -10,7 +10,6 @@
 ## Structure
 
 - **pages** - entry points for pages, no components should be here
-  - **api** - lambda functions handled by Next.js
 - **components** - components are here
 - **public** - static files (images, etc.)
 - **flow-typed** - Flow type definitions
