@@ -35,12 +35,16 @@ export default function SearchBar() {
         <div className="icon-container">
           <SearchIcon width={20} height={20} />
         </div>
+
         <div className="input-container">
           <input type="text" placeholder="Search for anything" onChange={handleChange} onKeyDown={handleEnterKey} value={query} />
         </div>
-      </div>
-      <div className="button-container">
-        <Button onClick={handleSearch}>Search</Button>
+
+        <div className="button-container">
+          <Button onClick={handleSearch} round>
+            <SearchIcon width={24} height={24} color="#eceff1" />
+          </Button>
+        </div>
       </div>
       <style jsx>
         {`
@@ -81,8 +85,11 @@ export default function SearchBar() {
             height: 34px;
             font-size: 16px;
           }
+
           .button-container {
-            margin-left: 16px;
+            display: flex;
+            align-items: center;
+            padding-right: 6px;
           }
           `}
       </style>

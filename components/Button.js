@@ -8,12 +8,13 @@ type Props = {|
   +flat?: boolean,
   +className?: string,
   +active?: boolean,
+  +round?: boolean,
   +color?: string,
   +hover?: string,
 |};
 
 const Button = ({
-  children, onClick, flat, active, className = '', ...other
+  children, onClick, flat, active, round, className = '', ...other
 }: Props) => {
   let color = other.color || '#1976d2';
   let hover = other.hover || '#0d47a1';
@@ -30,15 +31,15 @@ const Button = ({
               box-shadow: none;
               color: ${flat ? color : '#fff'};
               background-color: ${flat ? 'transparent' : color};
-              padding: 6px 16px;
+              padding: 6px ${round ? 6 : 16}px;
               font-size: 0.875rem;
-              min-width: 64px;
+              min-width: ${round ? 0 : 64}px;
               box-sizing: border-box;
               transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
               font-family: "Roboto", "Helvetica", "Arial", sans-serif;
               font-weight: 500;
               line-height: 1.75;
-              border-radius: 4px;
+              border-radius: ${round ? '50%' : '4px'};
               letter-spacing: 0.02857em;
               text-transform: uppercase;
               border: 0;
