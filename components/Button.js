@@ -8,13 +8,15 @@ type Props = {|
   +flat?: boolean,
   +className?: string,
   +active?: boolean,
+  +color?: string,
+  +hover?: string,
 |};
 
 const Button = ({
-  children, onClick, flat, active, className = '',
+  children, onClick, flat, active, className = '', ...other
 }: Props) => {
-  let color = '#1976d2';
-  let hover = '#0d47a1';
+  let color = other.color || '#1976d2';
+  let hover = other.hover || '#0d47a1';
   if (active) {
     color = '#ffc400';
     hover = '#b28900';
