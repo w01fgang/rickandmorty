@@ -27,6 +27,7 @@ module.exports = {
     'cypress/globals': true,
   },
   rules: {
+    'react/require-default-props': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
   },
 };
