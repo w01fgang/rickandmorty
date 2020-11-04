@@ -1,5 +1,5 @@
 // @flow
-import React, { Children } from 'react';
+import React, { Children, Fragment } from 'react';
 
 type Props = {|
   +children: React$Node,
@@ -12,11 +12,11 @@ export default function Breadcrumbs({ children }: Props) {
         <li>
           <a href="/">Main</a>
         </li>
-        {Children.toArray(children).map((el) => (
-          <>
+        {Children.toArray(children).map((el, i) => (
+          <Fragment key={`f-${i + 1}`}>
             <li className="separator">/</li>
             {el}
-          </>
+          </Fragment>
         ))}
       </ol>
       <style jsx global>
