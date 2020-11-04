@@ -10,6 +10,7 @@ function App({ Component, pageProps }: $FlowFixMeProps) {
         {`
           body {
             margin: 0;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
           }
         `}
       </style>
