@@ -13,6 +13,7 @@ import Paper from './Card/Paper';
 import EpisodesTable from './EpisodesTable';
 import Button from './Button';
 import Breadcrumbs from './Breadcrumbs';
+import BrandTitle from './BrandTitle';
 
 const styles = {
   paper: {
@@ -55,6 +56,9 @@ class CharacterDetails extends PureComponent<Props> {
 
     return (
       <div className="container">
+        <div className="logo-container">
+          <BrandTitle />
+        </div>
         <div className="breadcrumbs-container">
           <Breadcrumbs>
             <li>
@@ -172,6 +176,13 @@ class CharacterDetails extends PureComponent<Props> {
               justify-content: center;
               flex: 1 1 100%;
               margin-bottom: 8px;
+            }
+
+            .logo-container {
+              display: flex;
+              width: 100%;
+              border-bottom: 1px solid #cfd8dc;
+              margin-bottom: 16px;
             }
         `}
         </style>
