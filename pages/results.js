@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { makeSearch } from '../lib/actions';
 
 import Search from '../components/Search';
+import Breadcrumbs from '../components/Breadcrumbs';
 import Card from '../components/Card';
 import Pagination from '../components/Pagination';
 
@@ -24,12 +25,31 @@ const ResultsPage = () => {
     }
   }, [dispatch, query, router]);
 
+  useEffect(() => {
+    if (searchResults.length > 0 && searchResults.slice(page * 5, page * 5 + 5).length === 0) {
+      dispatch(getMoreCharacters());
+    }
+  }, [dispatch, page, searchResults]);
+
   const handleCardClick = useCallback((id: number) => {
     router.push({ pathname: '/view/[itemId]', query: { itemId: id } });
   }, [router]);
 
+  const handlePageChange = useCallback((nextPage: number) => {
+    dispatch(setPage(nextPage));
+  }, [dispatch]);
+
   return (
     <div className="container">
+      <div className="breadcrumbs-container">
+        <Breadcrumbs>
+          <li>
+            <p>
+              Search results
+            </p>
+          </li>
+        </Breadcrumbs>
+      </div>
       <Search />
 
       <div className="results">
@@ -61,6 +81,12 @@ const ResultsPage = () => {
             justify-content: center;
           }
 
+          .breadcrumbs-container {
+            display: flex;
+            flex: 1 1 auto;
+            padding: 0 8px;
+          }
+
           .card-container {
             display: flex;
             justify-content: center;
@@ -84,6 +110,10 @@ const ResultsPage = () => {
           @media(max-width: 1200px) {
             .card-container {
               flex: 0 1 40%;
+            }
+
+            .breadcrumbs-container {
+              padding: 0 24px;
             }
           }
         `}
