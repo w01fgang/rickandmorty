@@ -217,7 +217,7 @@ declare module "next/router" {
 }
 
 declare module "next/link" {
-  declare module.exports: Class<React$Component<{|href: string, prefetch?: bool|}, any>>;
+  declare module.exports: Class<React$Component<{|href: string, prefetch?: bool, children: React$Element<"a">|}, any>>;
 }
 
 declare module "next/error" {

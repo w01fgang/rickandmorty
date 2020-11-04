@@ -1,11 +1,30 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import Link from 'next/link';
+import type { Dispatch } from 'redux';
+
+import type { Action } from '../lib/actions';
+import { selectQuery } from '../lib/selectors';
+import createFilter from '../lib/createFilter';
 
 import CardBase from './Card/Base';
 import Button from './Button';
+import Breadcrumbs from './Breadcrumbs';
+
+type OwnProps = {|
+  +character: Character,
+|};
+
+type StateProps = {|
+  +query: string,
+|};
 
 type Props = {|
-  +character: Character,
+  ...OwnProps,
+  ...StateProps,
+  /* eslint-disable-next-line */
+  +dispatch: Dispatch<Action>,
 |};
 
 class CharacterDetails extends PureComponent<Props> {
@@ -14,9 +33,24 @@ class CharacterDetails extends PureComponent<Props> {
   }
 
   render() {
-    const { character } = this.props;
+    const { character, query } = this.props;
+
     return (
       <div className="container">
+        <div className="breadcrumbs-container">
+          <Breadcrumbs>
+            <li>
+              <Link href={`/results?${createFilter(query)}`}>
+                <a>Search results</a>
+              </Link>
+            </li>
+            <li>
+              <p>
+                {character.name}
+              </p>
+            </li>
+          </Breadcrumbs>
+        </div>
         <div className="profile">
           <CardBase
             image={character.image}
@@ -38,6 +72,18 @@ class CharacterDetails extends PureComponent<Props> {
             max-width: 1200px;
             margin: 0 auto;
             padding: 24px;
+            flex-wrap: wrap;
+          }
+
+          .breadcrumbs-container {
+            display: flex;
+            flex: 1 1 100%;
+            padding: 0 8px;
+          }
+
+          .profile {
+            display: flex;
+            flex: 1 1 auto;
           }
         `}
         </style>
@@ -46,4 +92,8 @@ class CharacterDetails extends PureComponent<Props> {
   }
 }
 
-export default CharacterDetails;
+const mapStateToProps = (state): StateProps => ({
+  query: selectQuery(state),
+});
+/* eslint-disable-next-line */
+export default connect<Props, OwnProps, _, StateProps, GlobalState, _>(mapStateToProps)(CharacterDetails);

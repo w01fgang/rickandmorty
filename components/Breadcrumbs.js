@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Children } from 'react';
 
 type Props = {|
   +children: React$Node,
@@ -12,8 +12,12 @@ export default function Breadcrumbs({ children }: Props) {
         <li>
           <a href="/">Main</a>
         </li>
-        <li className="separator">/</li>
-        {children}
+        {Children.toArray(children).map((el) => (
+          <>
+            <li className="separator">/</li>
+            {el}
+          </>
+        ))}
       </ol>
       <style jsx global>
         {`

@@ -115,6 +115,16 @@ const ResultsPage = () => {
             .breadcrumbs-container {
               padding: 0 24px;
             }
+
+            .results {
+              justify-content: center;
+            }
+          }
+
+          @media(max-width: 600px) {
+            .card-container {
+              flex: 0 1 100%;
+            }
           }
         `}
       </style>
