@@ -1,17 +1,17 @@
 
 import { UrlObject, URLFormatOptions } from 'url';
 import { ServerResponse, IncomingMessage } from 'http';
-declare type ParsedUrlQuery = { [key: string]: any };
+declare type ParsedUrlQuery = { [key: string]: any, ... };
 
 declare module "next" {
-  declare type NextApp = {
+  declare type NextApp = {|
     prepare(): Promise<void>;
     getRequestHandler(): any;
     render(req: any, res: any, pathname: string, query: any): any;
     renderToHTML(req: any, res: any, pathname: string, query: string): string;
     renderError(err: Error, req: any, res: any, pathname: any, query: any): any;
     renderErrorToHTML(err: Error, req: any, res: any, pathname: string, query: any): string;
-  };
+  |};
   declare module.exports: (...opts: any) => NextApp
 }
 
@@ -59,27 +59,28 @@ declare module "next/dynamic" {
 declare module "next/router" {
   declare type Handler = (...evts: any[]) => void;
 
-  declare export type MittEmitter = {
+  declare export type MittEmitter = {|
     on(type: string, handler: Handler): void;
     off(type: string, handler: Handler): void;
     emit(type: string, ...evts: any[]): void;
-  };
+  |};
 
-  declare export type AppInitialProps = {
-    pageProps: any;
-  };
+  declare export type AppInitialProps = {|
+    pageProps: any,
+  |};
 
   declare export type AppTreeType = React$ComponentType<AppInitialProps & {
-    [name: string]: any;
+    [name: string]: any,
+    ...
   }>;
 
   declare export interface NextPageContext {
     /**
      * Error object if encountered during rendering
      */
-    err?: Error & {
+    err?: Error & {|
         statusCode?: number;
-    } | null;
+    |} | null;
     /**
      * `HTTP` request object.
      */
@@ -116,7 +117,7 @@ declare module "next/router" {
     ...
   };
 
-  declare export type NextRouter = BaseRouter & {
+  declare export type NextRouter = BaseRouter & {|
     push(url: Url, as?: Url, options?: { ... }): Promise<boolean>,
     replace(url: Url, as?: Url, options?: { ... }): Promise<boolean>,
     reload(): void,
@@ -124,7 +125,7 @@ declare module "next/router" {
     beforePopState(cb: BeforePopStateCallback): void,
     prefetch(url: string): Promise<void>,
     events: MittEmitter,
-  }
+  |}
 
   declare type RouteInfo = {
     Component: React$ComponentType,
@@ -216,15 +217,15 @@ declare module "next/router" {
 }
 
 declare module "next/link" {
-  declare module.exports: Class<React$Component<{href: string, prefetch?: bool}, any>>;
+  declare module.exports: Class<React$Component<{|href: string, prefetch?: bool|}, any>>;
 }
 
 declare module "next/error" {
-  declare module.exports: Class<React$Component<{statusCode: number}, any>>;
+  declare module.exports: Class<React$Component<{|statusCode: number|}, any>>;
 }
 
 declare module "next/config" {
-  declare module.exports: () => { serverRuntimeConfig: { [key: string]: string }, publicRuntimeConfig: { [key: string]: string } };
+  declare module.exports: () => {| serverRuntimeConfig: { [key: string]: string, ... }, publicRuntimeConfig: { [key: string]: string, ... } |};
 }
 
 declare module "next/next-server/lib/utils" {
@@ -453,7 +454,7 @@ declare module "next/next-server/lib/utils" {
      * Set preview data for Next.js' prerender mode
      */
     setPreviewData: (
-      data: { [key: string]: any } | string,
+      data: { [key: string]: any, ... } | string,
       options?: {
         /**
          * Specifies the number (in seconds) for the preview session to last for.
