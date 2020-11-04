@@ -43,7 +43,9 @@ declare type ApiResponse<T> = {|
 
 
 declare type GlobalState = {|
+  +page: number,
   +count: number,
+  +next: string | null,
   +query: string,
   +searching: boolean,
   +searchResults: Array<Character>,

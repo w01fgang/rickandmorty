@@ -1,9 +1,9 @@
 // @flow
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { makeSearch } from '../lib/actions';
+import { makeSearch, getMoreCharacters, setPage } from '../lib/actions';
 
 import Search from '../components/Search';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -14,9 +14,9 @@ const ResultsPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const searchResults = useSelector((state: GlobalState) => state.searchResults);
+  const page = useSelector((state: GlobalState) => state.page);
   const totalPages = useSelector((state: GlobalState) => Math.ceil(state.count / 5));
   const query = useSelector((state: GlobalState) => state.query);
-  const [page, setPage] = useState(0);
 
   useEffect(() => {
     const queryFromUrl = Object.values(router.query).join(' ');
@@ -68,7 +68,7 @@ const ResultsPage = () => {
       </div>
 
       <div className="pagination">
-        <Pagination page={page} totalPages={totalPages} onClick={setPage} />
+        <Pagination page={page} totalPages={totalPages} onClick={handlePageChange} />
       </div>
 
       <style jsx>

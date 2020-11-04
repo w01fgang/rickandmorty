@@ -1,9 +1,9 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { makeSearch } from '../lib/actions';
+import { makeSearch, setQuery } from '../lib/actions';
 import createFilter from '../lib/createFilter';
 
 import SearchIcon from './icons/Search';
@@ -11,16 +11,11 @@ import Button from './Button';
 
 export default function SearchBar() {
   const dispatch = useDispatch();
-  const initialQuery = useSelector((state: GlobalState) => state.query);
-  const [query, setQuery] = useState('');
+  const query = useSelector((state: GlobalState) => state.query);
   const router = useRouter();
 
-  useEffect(() => {
-    setQuery(initialQuery);
-  }, [initialQuery]);
-
   const handleChange = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-    setQuery(e.currentTarget.value);
+    dispatch(setQuery(e.currentTarget.value));
   };
 
   const handleSearch = () => {
