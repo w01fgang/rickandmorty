@@ -22,9 +22,12 @@ const Button = ({
     color = '#ffc400';
     hover = '#b28900';
   }
+
   return (
     <>
-      <button type="button" className={cx('btn', className)} onClick={onClick}>{children}</button>
+      <button type="button" className={cx('btn', className)} onClick={onClick}>
+        {children}
+      </button>
       <style jsx>
         {`
             .btn {

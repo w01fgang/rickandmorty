@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 function App({ Component, pageProps }: $FlowFixMeProps) {
   return (
     <>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Component {...pageProps} />
       <Footer />
       <style jsx global>

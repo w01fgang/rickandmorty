@@ -14,6 +14,8 @@ import Card from '../components/Card';
 import Pagination from '../components/Pagination';
 import QuoteCard from '../components/QuoteCard';
 
+const cardsPerPage = 5;
+
 const ResultsPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -41,12 +43,14 @@ const ResultsPage = () => {
       dispatch(makeSearch(queryFromUrl));
       setPageLoaded(true);
     }
+    // fetch all it the query is empty
     if (!queryFromUrl && !query) {
       dispatch(getAllCharacters());
     }
   }, [dispatch, query, router, pageLoaded, handleReset]);
 
   useEffect(() => {
+    // fetch next page
     if (searchResults.length > 0 && searchResults.slice(page * 5, page * 5 + 5).length === 0) {
       dispatch(getMoreCharacters());
     }
@@ -61,19 +65,18 @@ const ResultsPage = () => {
   }, [dispatch]);
 
   const onFilterChange = useCallback((filter: { [string]: string | void, ... }) => {
-    const newQuery = {
-      ...router.query,
-      ...filter,
-    };
+    const newQuery = { ...router.query, ...filter };
+    // remove undefined properties
     const cleanQuery = JSON.parse(JSON.stringify(newQuery));
     router.push({
       pathname: '/results',
       query: cleanQuery,
     });
+    // allow items refetch
     setPageLoaded(false);
   }, [router]);
 
-  const cards = searchResults.slice(page * 5, page * 5 + 5);
+  const cards = searchResults.slice(page * cardsPerPage, page * cardsPerPage + cardsPerPage);
 
   return (
     <div className="container">
@@ -86,7 +89,9 @@ const ResultsPage = () => {
           </li>
         </Breadcrumbs>
       </div>
+
       <Search onReset={handleReset} />
+
       <Filters
         status={router.query.status}
         gender={router.query.gender}
@@ -108,7 +113,7 @@ const ResultsPage = () => {
           </div>
         ))}
 
-        {cards.length === 5 && (
+        {cards.length === cardsPerPage && (
           <div className="card-container">
             <QuoteCard />
           </div>

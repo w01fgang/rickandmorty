@@ -12,6 +12,7 @@ export default function Breadcrumbs({ children }: Props) {
         <li>
           <a href="/">Main</a>
         </li>
+
         {Children.toArray(children).map((el, i) => (
           <Fragment key={`f-${i + 1}`}>
             <li className="separator">/</li>

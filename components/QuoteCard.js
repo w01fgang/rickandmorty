@@ -15,6 +15,7 @@ function QuoteCard({ className, style }: Props) {
   const [index, setIndex] = useState(latsIndex);
 
   useEffect(() => {
+    // rotate quotes
     const interval = setInterval(() => {
       setIndex((state) => {
         const next = (state + 1) % facts.length;

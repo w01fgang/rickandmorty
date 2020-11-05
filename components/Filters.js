@@ -20,6 +20,13 @@ const speciesOptions = [
   { value: 'unknown', label: 'Unknown' },
 ];
 
+const selectOption = (option: { value: string, label: string, ... } | null, name: string) => {
+  if (option) {
+    return { [name]: option.value };
+  }
+  return { [name]: undefined };
+};
+
 type Props = {|
   +status: ?string,
   +gender: ?string,
@@ -31,27 +38,15 @@ export default function Filters({
   status, gender, species, onChange,
 }: Props) {
   const onStatusChange = useCallback((option: { value: string, label: string, ... } | null) => {
-    if (option) {
-      onChange({ status: option.value });
-    } else {
-      onChange({ status: undefined });
-    }
+    onChange(selectOption(option, 'status'));
   }, [onChange]);
 
   const onGenderChange = useCallback((option: { value: string, label: string, ... } | null) => {
-    if (option) {
-      onChange({ gender: option.value });
-    } else {
-      onChange({ gender: undefined });
-    }
+    onChange(selectOption(option, 'gender'));
   }, [onChange]);
 
   const onSpeciesChange = useCallback((option: { value: string, label: string, ... } | null) => {
-    if (option) {
-      onChange({ species: option.value });
-    } else {
-      onChange({ species: undefined });
-    }
+    onChange(selectOption(option, 'species'));
   }, [onChange]);
 
   return (

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import RSelect from 'react-select';
+import ReactSelect from 'react-select';
 
 const styles = {
   container: () => ({ flex: '1 1 auto' }),
@@ -20,7 +20,7 @@ export default function Select({
   return (
     <div className="container">
       <label htmlFor={name}>{label}</label>
-      <RSelect
+      <ReactSelect
         options={options}
         value={options.find((el) => el.value === value)}
         styles={styles}

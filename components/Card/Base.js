@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 import Button from '../Button';
 import Paper from './Paper';
@@ -19,11 +19,11 @@ function CardBase(props: Props) {
     image, className, onClick, id, children, actions, style,
   } = props;
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (onClick) {
       onClick(id);
     }
-  };
+  }, [onClick, id]);
 
   return (
     <Paper className={className}>

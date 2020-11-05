@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 import Base from './Base';
 
@@ -17,18 +17,20 @@ function Card(props: Props) {
   const {
     image, name, className, onClick, id, location, episodesCount,
   } = props;
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     onClick(id);
-  };
+  }, [onClick, id]);
 
   return (
     <Base image={image} className={className} onClick={handleClick} id={id}>
       <div className="content">
         <h2>{name}</h2>
+
         <p>
           <b>Last location</b>
           <span>{location}</span>
         </p>
+
         <p>
           <b>Total episodes</b>
           <span>{episodesCount}</span>

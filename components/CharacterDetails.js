@@ -48,7 +48,7 @@ class CharacterDetails extends PureComponent<Props> {
   }
 
   handleClick = () => {
-    alert('Buy merchendaise clicked! Thank you!');
+    alert('Buy merchendaise clicked! Thank you!'); // eslint-disable-line no-alert
   }
 
   render() {
@@ -63,7 +63,7 @@ class CharacterDetails extends PureComponent<Props> {
           <Breadcrumbs>
             <li>
               <Link href={`/results?${createFilter(query)}`}>
-                {/* eslint-disable-next-line */}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a>Search results</a>
               </Link>
             </li>
@@ -199,5 +199,5 @@ const mapStateToProps = (state): StateProps => ({
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
   getEpisodes: (episodes: Array<string>) => dispatch(getCharacterEpisodes(episodes)),
 });
-/* eslint-disable-next-line */
+/* eslint-disable-next-line max-len */
 export default connect<Props, OwnProps, StateProps, DispatchProps, GlobalState, _>(mapStateToProps, mapDispatchToProps)(CharacterDetails);
