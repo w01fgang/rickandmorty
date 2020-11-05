@@ -1,11 +1,15 @@
 // @flow
 import React from 'react';
+
 import { wrapper } from '../lib/store';
+
+import Footer from '../components/Footer';
 
 function App({ Component, pageProps }: $FlowFixMeProps) {
   return (
     <>
       <Component {...pageProps} />
+      <Footer />
       <style jsx global>
         {`
           body {
