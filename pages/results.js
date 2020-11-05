@@ -173,6 +173,9 @@ const ResultsPage = () => {
             .card-container {
               flex: 0 1 100%;
             }
+            .pagination {
+              padding: 8px;
+            }
           }
         `}
       </style>

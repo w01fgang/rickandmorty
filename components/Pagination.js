@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import Button from './Button';
 
@@ -10,12 +11,17 @@ type Props = {|
 |};
 
 export default function Pagination({ page, totalPages, onClick }: Props) {
+  const isMobileDevice = useMediaQuery({
+    query: '(max-device-width: 440px)',
+  });
+  const buttonsAmount = isMobileDevice ? 3 : 5;
+  const buttonsCorrection = isMobileDevice ? 1 : 0;
   let pages = new Array(totalPages).fill(1).map((_, i) => i);
 
-  if (page > 2) {
-    pages = pages.slice(page - 2, page + 3);
+  if (page > 2 - buttonsCorrection) {
+    pages = pages.slice(page - 2 + buttonsCorrection, page + buttonsAmount - 2 + buttonsCorrection);
   } else {
-    pages = pages.slice(0, 5);
+    pages = pages.slice(0, buttonsAmount);
   }
 
   const nextPage = () => onClick(page + 1);
