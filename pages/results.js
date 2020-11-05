@@ -9,6 +9,7 @@ import Search from '../components/Search';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Card from '../components/Card';
 import Pagination from '../components/Pagination';
+import QuoteCard from '../components/QuoteCard';
 
 const ResultsPage = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,8 @@ const ResultsPage = () => {
     dispatch(setPage(nextPage));
   }, [dispatch]);
 
+  const cards = searchResults.slice(page * 5, page * 5 + 5);
+
   return (
     <div className="container">
       <div className="breadcrumbs-container">
@@ -58,7 +61,7 @@ const ResultsPage = () => {
       <Search />
 
       <div className="results">
-        {searchResults.slice(page * 5, page * 5 + 5).map((char) => (
+        {cards.map((char) => (
           <div key={char.id} className="card-container">
             <Card
               id={char.id}
@@ -70,6 +73,12 @@ const ResultsPage = () => {
             />
           </div>
         ))}
+
+        {cards.length === 5 && (
+          <div className="card-container">
+            <QuoteCard />
+          </div>
+        )}
       </div>
 
       <div className="pagination">
