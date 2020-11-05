@@ -14,6 +14,7 @@
 - **assets** - static assets
 - **flow-typed** - Flow type definitions
 - **lib** - Store, Actions, Reducer, etc.
+- **e2e-tests** - Integration tests
 
 ## Development process
 
@@ -52,4 +53,9 @@ yarn flow lint
 Fix eslint errors
 ```
 yarn flow lint:fix
+```
+
+Run integration tests locally (remember to install dependencies inside)
+```
+cd e2e-tests && yarn dev
 ```

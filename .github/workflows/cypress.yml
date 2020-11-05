@@ -1,0 +1,35 @@
+name: End-to-end tests
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Waiting for Vercel to deploy
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '120s'
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - run: (cd e2e-tests && yarn)
+      - run: echo -e 'pcm.!default {\n type hw\n card 0\n}\n\nctl.!default {\n type hw\n card 0\n}' > ~/.asoundrc
+      - run: echo ::set-env name=CYPRESS_BASE_URL::$(echo "https://rickandmorty-ten.vercel.app/")
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: e2e-tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_BASE_URL: ${{ env.CYPRESS_BASE_URL }}
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e-tests/cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e-tests/cypress/videos
