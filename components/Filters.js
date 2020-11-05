@@ -50,7 +50,7 @@ export default function Filters({
   }, [onChange]);
 
   return (
-    <div className="container">
+    <div className="container" data-cy="filter">
       <div className="input-container">
         <Select name="status" label="Status" options={statusOptions} value={status} onChange={onStatusChange} />
       </div>

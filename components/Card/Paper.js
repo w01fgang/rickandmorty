@@ -14,7 +14,7 @@ function Paper(props: Props) {
   } = props;
 
   return (
-    <div className={cx('container', className)} style={style}>
+    <div className={cx('container', className)} style={style} data-cy="paper">
       {children}
       <style jsx>
         {`

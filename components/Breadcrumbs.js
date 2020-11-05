@@ -7,7 +7,7 @@ type Props = {|
 
 export default function Breadcrumbs({ children }: Props) {
   return (
-    <nav className="breadcrumbs">
+    <nav className="breadcrumbs" data-cy="breadcrumbs">
       <ol>
         <li>
           <a href="/">Main</a>
