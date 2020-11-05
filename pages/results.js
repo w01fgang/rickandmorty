@@ -1,15 +1,23 @@
 // @flow
-import React, { useEffect, useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, type NextRouter } from 'next/router';
+import type { Dispatch } from 'redux';
 
 import {
-  setQuery,
-  makeSearch,
-  getMoreCharacters,
-  setPage,
-  getAllCharacters,
+  setQuery as setQueryAction,
+  makeSearch as makeSearchAction,
+  setPage as setPageAction,
+  getAllCharacters as getAllCharactersAction,
+  type Action,
 } from '../lib/actions';
+import {
+  selectPage,
+  selectCount,
+  selectQuery,
+  selectCharacters,
+} from '../lib/selectors';
+import { cardsPerPage } from '../lib/constants';
 
 import Search from '../components/Search';
 import Filters from '../components/Filters';
@@ -18,59 +26,75 @@ import Card from '../components/Card';
 import Pagination from '../components/Pagination';
 import QuoteCard from '../components/QuoteCard';
 
-const cardsPerPage = 5;
+type StateProps = {|
+  characters: Array<Character>,
+  page: number,
+  totalPages: number,
+  query: string,
+|};
 
-const ResultsPage = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const searchResults = useSelector((state: GlobalState) => state.searchResults);
-  const page = useSelector((state: GlobalState) => state.page);
-  const totalPages = useSelector((state: GlobalState) => Math.ceil(state.count / 5));
-  const query = useSelector((state: GlobalState) => state.query);
-  const [pageLoaded, setPageLoaded] = useState(false);
+type DispatchProps = {|
+  +setQuery: (query: string) => Action,
+  +getAllCharacters: () => Action,
+  +makeSearch: (query: string) => Action,
+  +setPage: (page: number) => Action,
+|};
 
-  const handleReset = useCallback(() => {
+type OwnProps = {|
+  +router: NextRouter,
+|};
+
+type Props = {|
+  ...StateProps,
+  ...DispatchProps,
+  ...OwnProps,
+|};
+
+class ResultsPage extends PureComponent<Props> {
+  componentDidMount() {
+    const {
+      router,
+      setQuery,
+      query,
+      makeSearch,
+      getAllCharacters,
+    } = this.props;
+    // router query will be empty https://github.com/vercel/next.js/discussions/18268#discussioncomment-112532
+    const queryParameters = new URLSearchParams(router.asPath);
+    const queryFromUrl = [...queryParameters.entries()].map(([, el]) => el).join(' ');
+    // fetch items on page reload
+    if (queryFromUrl !== query) {
+      setQuery(queryFromUrl);
+      makeSearch(queryFromUrl);
+    }
+    // fetch all it the query is empty
+    if (!queryFromUrl && !query) {
+      getAllCharacters();
+    }
+  }
+
+  handleReset = () => {
+    const { router, getAllCharacters } = this.props;
     router.push({
       pathname: '/results',
       shadow: true,
       query: {},
     });
-    dispatch(getAllCharacters());
-  }, [dispatch, router]);
+    getAllCharacters();
+  }
 
-  useEffect(() => {
-    if (pageLoaded) {
-      return;
-    }
-    // refetch after page reload
-    const queryFromUrl = Object.values(router.query).join(' ');
-    if (queryFromUrl !== query) {
-      dispatch(setQuery(queryFromUrl));
-      dispatch(makeSearch(queryFromUrl));
-    }
-    // fetch all it the query is empty
-    if (!queryFromUrl && !query) {
-      dispatch(getAllCharacters());
-    }
-    setPageLoaded(true);
-  }, [dispatch, query, router, pageLoaded, handleReset]);
-
-  useEffect(() => {
-    // fetch next page
-    if (searchResults.length > 0 && searchResults.slice(page * 5, page * 5 + 5).length === 0) {
-      dispatch(getMoreCharacters());
-    }
-  }, [dispatch, page, searchResults]);
-
-  const handleCardClick = useCallback((id: number) => {
+  handleCardClick = (id: number) => {
+    const { router } = this.props;
     router.push({ pathname: `/view/${id}` });
-  }, [router]);
+  }
 
-  const handlePageChange = useCallback((nextPage: number) => {
-    dispatch(setPage(nextPage));
-  }, [dispatch]);
+  handlePageChange = (nextPage: number) => {
+    const { setPage } = this.props;
+    setPage(nextPage);
+  }
 
-  const onFilterChange = useCallback((filter: { [string]: string | void, ... }) => {
+  onFilterChange = (filter: { [string]: string | void, ... }) => {
+    const { router, makeSearch, setQuery } = this.props;
     const newQuery = { ...router.query, ...filter };
     // remove undefined properties
     const cleanQuery = JSON.parse(JSON.stringify(newQuery));
@@ -78,68 +102,78 @@ const ResultsPage = () => {
       pathname: '/results',
       query: cleanQuery,
     });
-    // allow items refetch
-    setPageLoaded(false);
-  }, [router]);
+    const queryText = Object.values(cleanQuery).join(' ');
+    setQuery(queryText);
+    makeSearch(queryText);
+  };
 
-  const cards = searchResults.slice(page * cardsPerPage, page * cardsPerPage + cardsPerPage);
+  render() {
+    const {
+      characters,
+      page,
+      totalPages,
+      router,
+    } = this.props;
 
-  return (
-    <div className="container">
-      <div className="breadcrumbs-container">
-        <Breadcrumbs>
-          <li>
-            <p>
-              Search results
-            </p>
-          </li>
-        </Breadcrumbs>
-      </div>
+    const cards = characters.slice(page * cardsPerPage, page * cardsPerPage + cardsPerPage);
 
-      <Search onReset={handleReset} />
+    return (
+      <div className="container">
+        <div className="breadcrumbs-container">
+          <Breadcrumbs>
+            <li>
+              <p>
+                Search results
+              </p>
+            </li>
+          </Breadcrumbs>
+        </div>
 
-      <Filters
-        status={router.query.status}
-        gender={router.query.gender}
-        species={router.query.species}
-        onChange={onFilterChange}
-      />
+        <Search onReset={this.handleReset} />
 
-      <div className="results">
-        {cards.map((char) => (
-          <div key={char.id} className="card-container">
-            <Card
-              id={char.id}
-              name={char.name}
-              image={char.image}
-              location={char.location.name}
-              episodesCount={char.episode.length}
-              onClick={handleCardClick}
-            />
-          </div>
-        ))}
+        <Filters
+          status={router.query.status}
+          gender={router.query.gender}
+          species={router.query.species}
+          onChange={this.onFilterChange}
+        />
 
-        {cards.length === cardsPerPage && (
+        <div className="results">
+          {cards.map((char) => (
+            <div key={char.id} className="card-container">
+              <Card
+                id={char.id}
+                name={char.name}
+                image={char.image}
+                location={char.location.name}
+                episodesCount={char.episode.length}
+                onClick={this.handleCardClick}
+              />
+            </div>
+          ))}
+
+          {cards.length === cardsPerPage && (
           <div className="card-container">
             <QuoteCard />
           </div>
-        )}
-      </div>
-
-      {searchResults.length > 5 && (
-        <div className="pagination">
-          <Pagination page={page} totalPages={totalPages} onClick={handlePageChange} />
+          )}
         </div>
-      )}
 
-      <style jsx>
-        {`
+        {characters.length > 5 && (
+        <div className="pagination">
+          <Pagination page={page} totalPages={totalPages} onClick={this.handlePageChange} />
+        </div>
+        )}
+
+        <style jsx>
+          {`
           .container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            align-content: flex-start;
+            max-width: 1200px;
+            margin: 0 auto;
             min-height: calc(100vh - 40px);
           }
 
@@ -192,9 +226,24 @@ const ResultsPage = () => {
             }
           }
         `}
-      </style>
-    </div>
-  );
-};
+        </style>
+      </div>
+    );
+  }
+}
 
-export default ResultsPage;
+const mapStateToProps = (state: GlobalState): StateProps => ({
+  characters: selectCharacters(state),
+  page: selectPage(state),
+  totalPages: Math.ceil(selectCount(state) / 5),
+  query: selectQuery(state),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
+  setQuery: (query: string) => dispatch(setQueryAction(query)),
+  makeSearch: (query: string) => dispatch(makeSearchAction(query)),
+  setPage: (page: number) => dispatch(setPageAction(page)),
+  getAllCharacters: () => dispatch(getAllCharactersAction()),
+});
+/* eslint-disable-next-line max-len */
+export default withRouter(connect<Props, OwnProps, StateProps, DispatchProps, GlobalState, Dispatch<Action>>(mapStateToProps, mapDispatchToProps)(ResultsPage));
