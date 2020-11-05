@@ -21,10 +21,6 @@ function Footer() {
             align-items: center;
             justify-content: center;
             height: 40px;
-            bottom: 0;
-            left: 0;
-            position: absolute;
-            right: 0;
             background: #eceff1;
             border-top: 1px solid #cfd8dc;
             color: rgba(0, 0, 0, 0.54);

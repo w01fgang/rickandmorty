@@ -62,7 +62,7 @@ export default function EpisodesTable({ episodes }: Props) {
             text-align: left;
           }
 
-          @media (max-width: 970px) {
+          @media (max-width: 980px) {
             td:nth-of-type(3), td:nth-of-type(4), th:nth-of-type(3), th:nth-of-type(4) {
               display: none;
             }

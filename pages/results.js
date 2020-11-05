@@ -120,7 +120,7 @@ const ResultsPage = () => {
         )}
       </div>
 
-      {searchResults.length < 6 && (
+      {searchResults.length > 5 && (
         <div className="pagination">
           <Pagination page={page} totalPages={totalPages} onClick={handlePageChange} />
         </div>
@@ -134,6 +134,7 @@ const ResultsPage = () => {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            min-height: calc(100vh - 40px);
           }
 
           .breadcrumbs-container {

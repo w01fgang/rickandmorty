@@ -51,6 +51,7 @@ const ViewItem = () => {
         {`
           .container {
             display: flex;
+            min-height: calc(100vh - 40px);
           }
           .center {
             display: flex;

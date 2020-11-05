@@ -134,7 +134,7 @@ class CharacterDetails extends PureComponent<Props> {
             .container {
               display: flex;
               align-items: flex-start;
-              justify-content: center;
+              align-content: flex-start;
               flex-wrap: wrap;
               max-width: 1200px;
               margin: 0 auto;
@@ -183,6 +183,16 @@ class CharacterDetails extends PureComponent<Props> {
               width: 100%;
               border-bottom: 1px solid #cfd8dc;
               margin-bottom: 16px;
+            }
+
+            .episodes {
+              flex: 1 1 auto;
+            }
+
+            @media (max-width: 440px) {
+              .episodes {
+                margin-right: 24px;
+              }
             }
         `}
         </style>
