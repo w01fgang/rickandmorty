@@ -47,18 +47,18 @@ export default function EpisodesTable({ episodes }: Props) {
 
           /* Zebra striping */
           tr:nth-of-type(odd) {
-            background: #eee;
+            background: #eceff1;
           }
 
           th {
-            background: #333;
+            background: #263238;
             color: white;
             font-weight: bold;
           }
 
           td, th {
             padding: 6px;
-            border: 1px solid #ccc;
+            border: 1px solid #cfd8dc;
             text-align: left;
           }
 
@@ -78,13 +78,13 @@ export default function EpisodesTable({ episodes }: Props) {
             }
 
             tr {
-              border: 1px solid #ccc;
+              border: 1px solid #cfd8dc;
             }
 
             td {
               /* Behave  like a "row" */
               border: none;
-              border-bottom: 1px solid #eee;
+              border-bottom: 1px solid #eceff1;
               position: relative;
               padding-left: 50%;
             }
