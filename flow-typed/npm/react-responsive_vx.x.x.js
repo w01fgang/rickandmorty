@@ -2,5 +2,5 @@
 // flow-typed version: module/react-responsive_v8.1.0/flow_v0.137.0
 
 declare module 'react-responsive' {
-  declare export function useMediaQuery({ query: string }): boolean
+  declare export function useMediaQuery({| query: string |}): boolean
 }
