@@ -81,7 +81,7 @@ class CharacterDetails extends PureComponent<Props> {
             id={character.id}
             actions={(
               <div className="cta-container">
-                <Button color="#4caf50" hover="#388e3c" onClick={this.handleClick}>Buy merchendaise</Button>
+                <Button color="#4caf50" hover="#388e3c" onClick={this.handleClick} dataCy="buy-button">Buy merchendaise</Button>
               </div>
             )}
           >

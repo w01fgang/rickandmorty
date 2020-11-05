@@ -11,10 +11,11 @@ type Props = {|
   +round?: boolean,
   +color?: string,
   +hover?: string,
+  +dataCy: string,
 |};
 
 const Button = ({
-  children, onClick, flat, active, round, className = '', ...other
+  children, onClick, flat, active, round, className = '', dataCy, ...other
 }: Props) => {
   let color = other.color || '#1976d2';
   let hover = other.hover || '#0d47a1';
@@ -25,7 +26,7 @@ const Button = ({
 
   return (
     <>
-      <button type="button" className={cx('btn', className)} onClick={onClick}>
+      <button type="button" className={cx('btn', className)} onClick={onClick} data-cy={dataCy}>
         {children}
       </button>
       <style jsx>

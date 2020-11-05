@@ -32,7 +32,7 @@ export default function Pagination({ page, totalPages, onClick }: Props) {
     <div className="container">
       <div className="btn">
         {page > 0 && (
-          <Button onClick={prevPage}>
+          <Button onClick={prevPage} dataCy="prev-page">
             {'<'}
           </Button>
         )}
@@ -41,7 +41,7 @@ export default function Pagination({ page, totalPages, onClick }: Props) {
       <div className="pages">
         {pages.map((el) => (
           <div key={`btn-${el + 1}`} className="btn">
-            <Button onClick={() => onClick(el)} active={page === el}>
+            <Button onClick={() => onClick(el)} active={page === el} dataCy={`page-${el + 1}`}>
               {el + 1}
             </Button>
           </div>
@@ -50,7 +50,7 @@ export default function Pagination({ page, totalPages, onClick }: Props) {
 
       <div className="btn">
         {page !== totalPages && (
-          <Button onClick={nextPage}>
+          <Button onClick={nextPage} dataCy="next-page">
             {'>'}
           </Button>
         )}

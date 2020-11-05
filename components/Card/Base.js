@@ -31,7 +31,7 @@ function CardBase(props: Props) {
       {children}
       {(actions || handleClick) && (
         <div className="actions">
-          {actions || <Button flat onClick={handleClick}>View</Button>}
+          {actions || <Button flat onClick={handleClick} dataCy="view-buttonw">View</Button>}
         </div>
       )}
       <style jsx>

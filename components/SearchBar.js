@@ -48,19 +48,26 @@ export default function SearchBar({ onReset }: Props) {
       </div>
 
       <div className="input-container">
-        <input type="text" placeholder="Search for anything" onChange={handleChange} onKeyDown={handleEnterKey} value={query} />
+        <input
+          data-cy="search-input"
+          type="text"
+          placeholder="Search for anything"
+          onChange={handleChange}
+          onKeyDown={handleEnterKey}
+          value={query}
+        />
       </div>
 
       {query && (
         <div className="crear-container">
-          <button type="button" onClick={reset}>
+          <button type="button" onClick={reset} data-cy="reset-button">
             <CrossIcon width={20} height={20} />
           </button>
         </div>
       )}
 
       <div className="button-container">
-        <Button onClick={handleSearch} round>
+        <Button onClick={handleSearch} round dataCy="search-button">
           <SearchIcon width={24} height={24} color="#eceff1" />
         </Button>
       </div>
