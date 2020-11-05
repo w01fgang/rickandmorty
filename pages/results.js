@@ -115,9 +115,11 @@ const ResultsPage = () => {
         )}
       </div>
 
-      <div className="pagination">
-        <Pagination page={page} totalPages={totalPages} onClick={handlePageChange} />
-      </div>
+      {searchResults.length < 6 && (
+        <div className="pagination">
+          <Pagination page={page} totalPages={totalPages} onClick={handlePageChange} />
+        </div>
+      )}
 
       <style jsx>
         {`
