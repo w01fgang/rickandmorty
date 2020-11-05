@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import {
-  makeSearch, getMoreCharacters, setPage, getAllCharacters,
+  setQuery,
+  makeSearch,
+  getMoreCharacters,
+  setPage,
+  getAllCharacters,
 } from '../lib/actions';
 
 import Search from '../components/Search';
@@ -26,11 +30,12 @@ const ResultsPage = () => {
   const [pageLoaded, setPageLoaded] = useState(false);
 
   const handleReset = useCallback(() => {
-    dispatch(getAllCharacters());
     router.push({
       pathname: '/results',
-      shallow: true,
+      shadow: true,
+      query: {},
     });
+    dispatch(getAllCharacters());
   }, [dispatch, router]);
 
   useEffect(() => {
@@ -40,13 +45,14 @@ const ResultsPage = () => {
     // refetch after page reload
     const queryFromUrl = Object.values(router.query).join(' ');
     if (queryFromUrl !== query) {
+      dispatch(setQuery(queryFromUrl));
       dispatch(makeSearch(queryFromUrl));
-      setPageLoaded(true);
     }
     // fetch all it the query is empty
     if (!queryFromUrl && !query) {
       dispatch(getAllCharacters());
     }
+    setPageLoaded(true);
   }, [dispatch, query, router, pageLoaded, handleReset]);
 
   useEffect(() => {

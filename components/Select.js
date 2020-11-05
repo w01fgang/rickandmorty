@@ -22,7 +22,7 @@ export default function Select({
       <label htmlFor={name}>{label}</label>
       <ReactSelect
         options={options}
-        value={options.find((el) => el.value === value)}
+        value={options.find((el) => el.value === value) || ''}
         styles={styles}
         onChange={onChange}
         isClearable
