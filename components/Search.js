@@ -25,7 +25,7 @@ export default function Search({ fullScreen, onReset }: Props) {
             justify-content: center;
             flex-wrap: wrap;
             width: 100vw;
-            height: ${fullScreen ? '100vh' : '280px'};
+            height: ${fullScreen ? 'calc(100vh - 40px)' : '280px'};
           }
 
           .search-container {
