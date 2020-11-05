@@ -11,7 +11,7 @@
 
 - **pages** - entry points for pages, no components should be here
 - **components** - components are here
-- **public** - static files (images, etc.)
+- **assets** - static assets
 - **flow-typed** - Flow type definitions
 - **lib** - Store, Actions, Reducer, etc.
 
@@ -33,7 +33,23 @@ yarn start
 ```
 
 **DX**
+
 To open errors in your editor create a file `.env.local` in the root of the project and cpecify your editor
 ```
 REACT_EDITOR=atom
+```
+
+Check for static types errors
+```
+yarn flow check
+```
+
+Check for eslint errors
+```
+yarn flow lint
+```
+
+Fix eslint errors
+```
+yarn flow lint:fix
 ```
