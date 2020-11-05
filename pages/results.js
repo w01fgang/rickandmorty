@@ -3,9 +3,12 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { makeSearch, getMoreCharacters, setPage } from '../lib/actions';
+import {
+  makeSearch, getMoreCharacters, setPage, getAllCharacters,
+} from '../lib/actions';
 
 import Search from '../components/Search';
+import Filters from '../components/Filters';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Card from '../components/Card';
 import Pagination from '../components/Pagination';
@@ -20,16 +23,28 @@ const ResultsPage = () => {
   const query = useSelector((state: GlobalState) => state.query);
   const [pageLoaded, setPageLoaded] = useState(false);
 
+  const handleReset = useCallback(() => {
+    dispatch(getAllCharacters());
+    router.push({
+      pathname: '/results',
+      shallow: true,
+    });
+  }, [dispatch, router]);
+
   useEffect(() => {
     if (pageLoaded) {
       return;
     }
+    // refetch after page reload
     const queryFromUrl = Object.values(router.query).join(' ');
     if (queryFromUrl !== query) {
       dispatch(makeSearch(queryFromUrl));
       setPageLoaded(true);
     }
-  }, [dispatch, query, router, pageLoaded]);
+    if (!queryFromUrl && !query) {
+      dispatch(getAllCharacters());
+    }
+  }, [dispatch, query, router, pageLoaded, handleReset]);
 
   useEffect(() => {
     if (searchResults.length > 0 && searchResults.slice(page * 5, page * 5 + 5).length === 0) {
@@ -38,12 +53,25 @@ const ResultsPage = () => {
   }, [dispatch, page, searchResults]);
 
   const handleCardClick = useCallback((id: number) => {
-    router.push({ pathname: '/view/[itemId]', query: { itemId: id } });
+    router.push({ pathname: `/view/${id}` });
   }, [router]);
 
   const handlePageChange = useCallback((nextPage: number) => {
     dispatch(setPage(nextPage));
   }, [dispatch]);
+
+  const onFilterChange = useCallback((filter: { [string]: string | void, ... }) => {
+    const newQuery = {
+      ...router.query,
+      ...filter,
+    };
+    const cleanQuery = JSON.parse(JSON.stringify(newQuery));
+    router.push({
+      pathname: '/results',
+      query: cleanQuery,
+    });
+    setPageLoaded(false);
+  }, [router]);
 
   const cards = searchResults.slice(page * 5, page * 5 + 5);
 
@@ -58,7 +86,13 @@ const ResultsPage = () => {
           </li>
         </Breadcrumbs>
       </div>
-      <Search />
+      <Search onReset={handleReset} />
+      <Filters
+        status={router.query.status}
+        gender={router.query.gender}
+        species={router.query.species}
+        onChange={onFilterChange}
+      />
 
       <div className="results">
         {cards.map((char) => (

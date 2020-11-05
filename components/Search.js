@@ -6,14 +6,15 @@ import BrandTitle from './BrandTitle';
 
 type Props = {|
   +fullScreen?: boolean,
+  +onReset: () => void,
 |};
 
-export default function Search({ fullScreen }: Props) {
+export default function Search({ fullScreen, onReset }: Props) {
   return (
     <div className="container">
       <BrandTitle />
       <div className="search-container">
-        <SearchBar />
+        <SearchBar onReset={onReset} />
       </div>
       <style jsx>
         {`

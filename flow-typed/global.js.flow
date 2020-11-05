@@ -4,7 +4,7 @@ declare type Character = {|
   +id: number,
   +name: string,
   +status: 'Alive' | 'Dead' | 'Unknown',
-  +species: 'Human' | "Humanoid",
+  +species: 'Human' | "Humanoid" | "Unknown",
   +type: string,
   +gender: 'Male' | 'Female' | 'Genderless' | 'Unknown',
   +origin: {|

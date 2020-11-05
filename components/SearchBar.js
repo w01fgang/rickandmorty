@@ -7,9 +7,14 @@ import { makeSearch, setQuery } from '../lib/actions';
 import createFilter from '../lib/createFilter';
 
 import SearchIcon from './icons/Search';
+import CrossIcon from './icons/Cross';
 import Button from './Button';
 
-export default function SearchBar() {
+type Props = {|
+  +onReset?: () => void,
+|};
+
+export default function SearchBar({ onReset }: Props) {
   const dispatch = useDispatch();
   const query = useSelector((state: GlobalState) => state.query);
   const router = useRouter();
@@ -29,6 +34,13 @@ export default function SearchBar() {
     }
   };
 
+  const reset = () => {
+    dispatch(setQuery(''));
+    if (onReset) {
+      onReset();
+    }
+  };
+
   return (
     <div className="container">
       <div className="icon-container">
@@ -38,6 +50,14 @@ export default function SearchBar() {
       <div className="input-container">
         <input type="text" placeholder="Search for anything" onChange={handleChange} onKeyDown={handleEnterKey} value={query} />
       </div>
+
+      {query && (
+        <div className="crear-container">
+          <button type="button" onClick={reset}>
+            <CrossIcon width={20} height={20} />
+          </button>
+        </div>
+      )}
 
       <div className="button-container">
         <Button onClick={handleSearch} round>
@@ -82,6 +102,24 @@ export default function SearchBar() {
             flex: 0 1 480px;
             height: 34px;
             font-size: 16px;
+          }
+
+          .crear-container {
+            display: flex;
+            align-items: center;
+            padding-right: 6px;
+          }
+
+          .crear-container button {
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+          }
+
+          .crear-container button:focus {
+            outline: none;
           }
 
           .button-container {
