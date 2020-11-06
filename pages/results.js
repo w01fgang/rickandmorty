@@ -18,6 +18,7 @@ import {
   selectCharacters,
 } from '../lib/selectors';
 import { cardsPerPage } from '../lib/constants';
+import { scrollToTop } from '../lib/utils';
 
 import Search from '../components/Search';
 import Filters from '../components/Filters';
@@ -91,6 +92,7 @@ class ResultsPage extends PureComponent<Props> {
   handlePageChange = (nextPage: number) => {
     const { setPage } = this.props;
     setPage(nextPage);
+    scrollToTop();
   }
 
   onFilterChange = (filter: { [string]: string | void, ... }) => {
