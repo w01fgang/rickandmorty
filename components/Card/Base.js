@@ -27,7 +27,17 @@ function CardBase(props: Props) {
 
   return (
     <Paper className={className}>
-      <div className="image" style={{ backgroundImage: `url(${image})` }} />
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div
+        aria-label={actions ? 'Image' : 'View'}
+        /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
+        tabIndex={!actions && '0'}
+        role={!actions && 'button'}
+        onKeyPress={handleClick}
+        onClick={handleClick}
+        className="image"
+        style={{ backgroundImage: `url(${image})` }}
+      />
       {children}
       {(actions || handleClick) && (
         <div className="actions">
@@ -41,6 +51,7 @@ function CardBase(props: Props) {
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            ${!actions ? 'cursor: pointer;' : ''}
           }
 
           .actions {
