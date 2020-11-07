@@ -18,6 +18,12 @@
 
 ## Development process
 
+**Requirements**
+Add api endpoint to `.env.local` file
+```
+NEXT_PUBLIC_API_ENDPOINT="https://rickandmortyapi.com/api"
+```
+
 **Start in dev mode**
 ```
 yarn dev
